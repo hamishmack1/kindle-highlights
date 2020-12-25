@@ -19,41 +19,29 @@ def find_location(info):
 	return location
 
 def read_clippings():
-	count = 0
-	raw_highlight_info = []
-	all_highlights = []
-
-	with open('clippings', 'rt') as myfile:
-		for line in myfile:
-			if line[0] == '\n' or line[0] == '=':
-				continue
-			else:
-				if count < 3:
-					raw_highlight_info.append(line.rstrip('\n'))
-					count += 1
-					if count == 3:
-						all_highlights.append(raw_highlight_info)
-						count = 0
-						raw_highlight_info = []
-		return all_highlights
+	data = open('clippings').read().strip().split('\n')
+	data = [y for y in [x for x in data if x != ''] if y[0] != '=']
+	data = [data[n:n+3] for n in range(0, len(data), 3)]
+	return data
 
 def create_library(all_highlights):
 	i = 0
 	library = []
 	found = False
-	while i < len(all_highlights) - 1:
-		if abs(find_location(all_highlights[i][1]) - find_location(all_highlights[i + 1][1])) < 10:
-			all_highlights.pop(i)
-		else:
-			for book in library:
-				if all_highlights[i][0] == book.get_title_auth():
-					book.add_highlight(all_highlights[i][2])
-					found = True
-			if not found:
-				library.append(Book(all_highlights[i][0], []))
-				library[len(library) - 1].add_highlight(all_highlights[i][2])
-			found = False
-			i += 1
+	while i < len(all_highlights):
+		if i < len(all_highlights) - 1:
+			if abs(find_location(all_highlights[i][1]) - find_location(all_highlights[i + 1][1])) < 10:
+				all_highlights.pop(i)
+				continue
+		for book in library:
+			if all_highlights[i][0] == book.get_title_auth():
+				book.add_highlight(all_highlights[i][2])
+				found = True
+		if not found:
+			library.append(Book(all_highlights[i][0], []))
+			library[len(library) - 1].add_highlight(all_highlights[i][2])
+		found = False
+		i += 1
 	return library
 
 def main():
