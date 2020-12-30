@@ -4,7 +4,7 @@ A python script that organises your kindle's "My Clippings.txt" file, by removin
 
 ### To use
 
-It is important to run the following bash command prior to executing the script to ensure the clippings file is of correct format.
+Run "highlights.sh" which executes the following (Ensure that "My Clippings.txt" is in current directory):
 
 ```
 awk '{ gsub(/\xef\xbb\xbf/,""); print }' My\ Clippings.txt > clippings
