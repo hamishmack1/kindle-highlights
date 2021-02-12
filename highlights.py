@@ -31,6 +31,7 @@ def create_library(all_highlights):
 		if i < len(all_highlights) - 1:
 			if abs(find_location(all_highlights[i][1]) - find_location(all_highlights[i + 1][1])) < 10:
 				all_highlights.pop(i)
+				continue;
 		if all_highlights[i][0] in books:
 			library[books.index(all_highlights[i][0])].add_highlight(all_highlights[i][2])
 		else:
